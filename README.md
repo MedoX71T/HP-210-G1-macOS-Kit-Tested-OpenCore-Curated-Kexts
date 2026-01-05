@@ -1,4 +1,4 @@
-# HP 210 G1 Hackintosh — OpenCore EFI for macOS Monterey & Sonoma
+# From Notebook to macOS — HP 210 G1, Reinvented
 
 **TL;DR:** A fully-configured vanilla OpenCore EFI for the **HP 210 G1** (Intel iGPU) — tested on **macOS Monterey (12.7.6)** and **macOS Sonoma (14.8)**. Includes ACPI patches, kexts, USB mapping, and post-install fixes.
 

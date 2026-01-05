@@ -2,6 +2,10 @@ name: Build Release Asset & Checksums
 
 on:
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag name for release (e.g., v1.0.0). Required when running manually.'
+        required: true
   release:
     types: [created]
 
@@ -10,17 +14,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Determine tag
+        id: set_tag
+        run: |
+          if [ "${GITHUB_EVENT_NAME}" = "release" ]; then
+            echo "tag=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+          fi
+
       - name: Create zip of EFI
         run: |
           mkdir -p release
-          zip -r release/efi-${{ github.event.release.tag_name }}.zip macos\* efi || zip -r release/efi-${{ github.event.release.tag_name }}.zip efi || true
+          zip -r release/efi-${{ steps.set_tag.outputs.tag }}.zip macos\* efi || zip -r release/efi-${{ steps.set_tag.outputs.tag }}.zip efi || true
+
       - name: Generate SHA256
         run: |
           ls -la release
           sha256sum release/* > release/SHA256SUMS.txt || shasum -a 256 release/* > release/SHA256SUMS.txt
+
       - name: Upload release assets
         uses: softprops/action-gh-release@v1
         with:
           files: release/*
+          tag_name: ${{ steps.set_tag.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

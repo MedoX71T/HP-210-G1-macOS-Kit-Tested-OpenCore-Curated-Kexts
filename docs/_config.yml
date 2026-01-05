@@ -1,0 +1,7 @@
+title: HP 210 G1 Hackintosh
+description: Vanilla OpenCore EFI for HP 210 G1 — macOS Monterey & Sonoma
+baseurl: ""
+url: ""
+theme: minima
+plugins:
+  - jekyll-sitemap

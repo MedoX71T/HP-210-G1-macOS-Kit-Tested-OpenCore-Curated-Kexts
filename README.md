@@ -1,4 +1,47 @@
-<h1 align="center">Hackintosh ?</h1>
+# HP 210 G1 Hackintosh — OpenCore EFI for macOS Monterey & Sonoma
+
+**TL;DR:** A fully-configured vanilla OpenCore EFI for the **HP 210 G1** (Intel iGPU) — tested on **macOS Monterey (12.7.6)** and **macOS Sonoma (14.8)**. Includes ACPI patches, kexts, USB mapping, and post-install fixes.
+
+<p align="center">Fully-configured vanilla OpenCore EFI for the **HP 210 G1** notebook, tested on **macOS Monterey (12.7.6)** and **macOS Sonoma (14.8)**. Includes ACPI patches, kexts, and step-by-step install & post-install guidance.</p>
+
+---
+
+## Table of Contents
+- [Features (highlights)](#features-highlights)
+- [Installation](#installation)
+- [Post-install (already applied)](#post-install-already-applied)
+- [Troubleshooting](#troubleshooting)
+- [Benchmarks](#benchmarks)
+- [Compatibility / What works](#compatibility--what-works)
+- [Contributing](#contributing)
+- [CHANGELOG](#changelog)
+- [License](#license)
+
+## Features (highlights)
+- **Vanilla OpenCore EFI** for HP 210 G1 (Monterey & Sonoma)
+- **ACPI patches, kexts, USB mapping, power management, iGPU acceleration**
+- Tested features: WiFi, Bluetooth, Graphics, Audio, Sleep, Battery reporting
+
+---
+
+## Installation
+- Download the latest release: [Releases](https://github.com/MedoX71T/HP210G1-Hackintosh/releases) — release zips include SHA256 checksums (see `RELEASE_CHECKSUMS.md`).
+- Create a macOS USB installer (see Dortania's OpenCore Install Guide or `GETTING STARTED` below)
+- Mount the EFI partition and copy the matching `EFI/` folder (choose Monterey or Sonoma)
+- Boot the USB with OpenCore, choose `Install macOS`, and complete the installer
+
+## Post-install (already applied)
+- Post-install configuration has already been applied in this EFI (SMBIOS, serials, kexts, ACPI patches, and USB mapping).
+- Need to re-apply or customize post-install steps? Mount the EFI and update `EFI/OC` files; follow the OpenCore Post-Install Guide for detailed steps.
+- For changes affecting iCloud/FaceTime, ensure SMBIOS and serials are valid and use a whitelisted Apple ID.
+
+## Troubleshooting
+- Boot issues: enable verbose boot (`-v`) and check `config.plist` for OpenCore version or ACPI/kext mismatches.
+- No audio: confirm `AppleALC.kext` layout ID and presence of `SSDT-HPET.aml`.
+- No iCloud/FaceTime: verify SMBIOS, serials, and that the Apple ID is whitelisted.
+- USB problems: re-run USB mapping and confirm kexts are injected correctly.
+
+Tools & logs: Use `MountEFI`, `IORegistryExplorer`, and `Hackintool` for diagnosis. When opening an issue, include your EFI zip and logs (`/var/log/system.log`, `BootLog.txt`, and an IORegistry dump). Use `scripts/collect-diagnostics.sh` to produce a diagnostics archive to attach to issues.
 
 <p align="center">
     <a href="https://www.apple.com/macos/monterey/">
@@ -23,8 +66,10 @@
 
 <p align="center">
     <a href="">
-        <img src="src/HP-210-G1.png" alt="HP 210 G1 macOS" width="800"> </a>
+        <img src="src/HP-210-G1.png" alt="HP 210 G1 running macOS Monterey & Sonoma" width="800"> </a>
 </p>
+
+<p align="center"><em>Screenshot: HP 210 G1 running macOS Monterey & Sonoma</em></p>
 
 #### I am not responsible for any damages you may cause.
 
@@ -32,7 +77,7 @@
 
 - Complete EFI packs are available in the releases page.
 - I will try my best to keep the repo updated with the latest kexts and OpenCore version.
-- This EFI is configured with Big Sur and Monterey.
+- This EFI is configured with Monterey and Sonoma.
 - With every EFI update you retrieve from here please remember to go through the post install guide.
 - For MacOS Monterey - Please go through [OLARILA GUIDE](https://www.olarila.com/topic/20908-easy-fast-and-perfect-vanilla-hackintosh/).
 
@@ -52,7 +97,7 @@
 
 <p align="center">
     <a href="">
-        <img src="src/Hardware.png" alt="Hardware macOS" width="800"> </a>
+        <img src="src/Hardware.png" alt="HP 210 G1 hardware overview" width="800"> </a>
 </p>
 
 > ### Video and Audio
@@ -67,7 +112,7 @@
 
 <p align="center">
     <a href="">
-        <img src="src/Video.png" alt="Video macOS" width="800"> </a> 
+        <img src="src/Video.png" alt="HP 210 G1 graphics & audio details" width="800"> </a> 
 </p>
 
 > ### Power, Charge, Sleep and Hibernation
@@ -82,7 +127,7 @@
 
 <p align="center">
     <a href="">
-        <img src="src/Battery.png" alt="Power macOS" width="800"> </a> 
+        <img src="src/Battery.png" alt="HP 210 G1 battery and power features" width="800"> </a> 
 </p>
 
 > ### Input/ Output
@@ -97,7 +142,7 @@
 
 <p align="center">
     <a href="">
-        <img src="src/Input.png" alt="Input macOS" width="800"> </a> 
+        <img src="src/Input.png" alt="HP 210 G1 I/O and networking features" width="800"> </a> 
 </p>
 
 > ### Display, TrackPad, TrackPoint, and Keyboard
@@ -112,7 +157,7 @@
 
 <p align="center">
     <a href="">
-        <img src="src/Trackpad.png" alt="Trackpad macOS" width="800"> </a> 
+        <img src="src/Trackpad.png" alt="HP 210 G1 trackpad & keyboard" width="800"> </a> 
 </p>
 
 > ### macOS Continuity
@@ -125,7 +170,7 @@
 
 <p align="center">
     <a href="">
-        <img src="src/Icloud.png" alt="Icloud macOS" width="800"> </a> 
+        <img src="src/Icloud.png" alt="macOS continuity & iCloud features on HP 210 G1" width="800"> </a> 
 </p>
 
 </details>
@@ -213,6 +258,30 @@ Before you do anything, please familiarize yourself with basic Hackintosh termin
 | Geekbench 6 |   2464 |  1023 |
 
 </details>
+
+## Compatibility / What works ✅
+
+| Feature | Status | Notes |
+| :------ | :----- | :---- |
+| WiFi | ✅ | Intel Wireless-AC 7260 via `AirportItlwm.kext` |
+| Bluetooth | ✅ | Intel firmware + patching applied |
+| Graphics (iGPU) | ✅ | Hardware acceleration via `WhateverGreen` |
+| Audio | ✅ | `AppleALC` with layout id 3 and `SSDT-HPET.aml` |
+| Sleep & Battery | ✅ | Power management and EC implemented |
+
+---
+
+## Updating OpenCore & Kexts 🔁
+
+- Always **back up your EFI** before making changes (zip the `EFI` folder and store a copy off-device).
+- Update kexts by replacing `.kext` folders inside `EFI/OC/Kexts` and update `config.plist` entries as needed.
+- For OpenCore, follow the official OpenCore upgrade guide: make small incremental changes and test via a USB installer before adopting to your main EFI.
+- Use the release workflow to generate checksums; verify downloaded release zips with `RELEASE_CHECKSUMS.md` instructions.
+
+---
+
+## Contributing 🤝
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for issue & PR guidelines, how to run diagnostics, and testing notes.
 
 # CONTACT
 

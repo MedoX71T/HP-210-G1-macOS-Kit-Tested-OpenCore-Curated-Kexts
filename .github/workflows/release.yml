@@ -1,0 +1,25 @@
+name: Build Release Asset & Checksums
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create zip of EFI
+        run: |
+          mkdir -p release
+          zip -r release/efi-${{ github.event.release.tag_name }}.zip macos\* efi || zip -r release/efi-${{ github.event.release.tag_name }}.zip efi || true
+      - name: Generate SHA256
+        run: |
+          ls -la release
+          sha256sum release/* > release/SHA256SUMS.txt || shasum -a 256 release/* > release/SHA256SUMS.txt
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

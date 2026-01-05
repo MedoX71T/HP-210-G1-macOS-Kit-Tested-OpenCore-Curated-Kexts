@@ -2,8 +2,6 @@
 
 **TL;DR:** A fully-configured vanilla OpenCore EFI for the **HP 210 G1** (Intel iGPU) — tested on **macOS Monterey (12.7.6)** and **macOS Sonoma (14.8)**. Includes ACPI patches, kexts, USB mapping, and post-install fixes.
 
-<p align="center">Fully-configured vanilla OpenCore EFI for the **HP 210 G1** notebook, tested on **macOS Monterey (12.7.6)** and **macOS Sonoma (14.8)**. Includes ACPI patches, kexts, and step-by-step install & post-install guidance.</p>
-
 ---
 
 ## Table of Contents
@@ -79,9 +77,11 @@ Tools & logs: Use `MountEFI`, `IORegistryExplorer`, and `Hackintool` for diagnos
 - I will try my best to keep the repo updated with the latest kexts and OpenCore version.
 - This EFI is configured with Monterey and Sonoma.
 - With every EFI update you retrieve from here please remember to go through the post install guide.
-- For MacOS Monterey - Please go through [OLARILA GUIDE](https://www.olarila.com/topic/20908-easy-fast-and-perfect-vanilla-hackintosh/).
+- For macOS Monterey — see the [OLARILA GUIDE](https://www.olarila.com/topic/20908-easy-fast-and-perfect-vanilla-hackintosh/).
 
 ## Update
+
+> **Optimizations:** CPU usage and GPU performance have been improved through power management and iGPU tuning.
 
 ### Recent
 
@@ -233,6 +233,8 @@ Before you do anything, please familiarize yourself with basic Hackintosh termin
 
 </details>
 
+## Benchmarks
+
 <details>
 <summary><strong> BENCHMARKS </strong></summary>
 </br>
@@ -259,7 +261,7 @@ Before you do anything, please familiarize yourself with basic Hackintosh termin
 
 </details>
 
-## Compatibility / What works ✅
+## Compatibility / What works
 
 | Feature | Status | Notes |
 | :------ | :----- | :---- |
@@ -280,8 +282,14 @@ Before you do anything, please familiarize yourself with basic Hackintosh termin
 
 ---
 
-## Contributing 🤝
+## Contributing
 Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for issue & PR guidelines, how to run diagnostics, and testing notes.
+
+## CHANGELOG
+See [CHANGELOG.md](CHANGELOG.md) for notable releases and the unreleased section.
+
+## License
+This project is licensed under the MIT License — see [LICENSE](LICENSE) for details.
 
 # CONTACT
 

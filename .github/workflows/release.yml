@@ -3,9 +3,13 @@ name: Build Release Asset & Checksums
 on:
   workflow_dispatch:
     inputs:
+      auto_bump:
+        description: 'Automatically bump minor version (v5.x → v5.(x+1)).'
+        required: false
+        default: 'true'
       tag:
-        description: 'Tag name for release (e.g., v1.0.0). Required when running manually.'
-        required: true
+        description: 'Tag name for release (e.g., v5.4). If auto_bump=true this is ignored.'
+        required: false
   release:
     types: [created]
 
@@ -17,12 +21,61 @@ jobs:
 
       - name: Determine tag
         id: set_tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -eux
           if [ "${GITHUB_EVENT_NAME}" = "release" ]; then
+            echo "Using tag from release event: ${{ github.event.release.tag_name }}"
             echo "tag=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
-          else
-            echo "tag=${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+            exit 0
           fi
+
+          # If auto_bump is true (default), compute next v5.x tag and push it
+          AUTO_BUMP="${{ github.event.inputs.auto_bump }}"
+          if [ -z "$AUTO_BUMP" ] || [ "$AUTO_BUMP" = "true" ]; then
+            echo "Auto-bump enabled. Fetching tags..."
+            git fetch --tags --prune
+
+            latest_tag=$(git tag -l 'v5.*' --sort=-v:refname | head -n1 || true)
+            if [ -z "$latest_tag" ]; then
+              next_tag="v5.3"
+            else
+              minor=$(echo "$latest_tag" | sed -E 's/^v5\.([0-9]+).*$/\1/')
+              if ! echo "$minor" | grep -Eq '^[0-9]+$'; then
+                minor=2
+              fi
+              next_minor=$((minor + 1))
+              next_tag="v5.${next_minor}"
+              # ensure uniqueness
+              while git rev-parse --verify --quiet "$next_tag" >/dev/null; do
+                next_minor=$((next_minor + 1))
+                next_tag="v5.${next_minor}"
+              done
+            fi
+
+            echo "Computed next tag: $next_tag"
+
+            # Push tag using GITHUB_TOKEN
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+            git tag -a "$next_tag" -m "Release $next_tag"
+            git push origin "$next_tag"
+
+            echo "tag=$next_tag" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # If auto_bump is false, expect a manual tag input
+          if [ -n "${{ github.event.inputs.tag }}" ]; then
+            echo "Using manual tag: ${{ github.event.inputs.tag }}"
+            echo "tag=${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "Error: auto_bump is false but no manual 'tag' input provided" >&2
+          exit 1
 
       - name: Create zip of EFI
         run: |

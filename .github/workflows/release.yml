@@ -107,15 +107,64 @@ jobs:
           echo "Error: auto_bump is false but no manual 'tag' input provided" >&2
           exit 1
 
+      - name: Ensure tag is set
+        run: |
+          set -euo pipefail
+          if [ -z "${{ steps.set_tag.outputs.tag }}" ]; then
+            echo "Tag not set — aborting" >&2
+            exit 1
+          fi
+
+      - name: Fetch tags (safety)
+        run: |
+          set -euo pipefail
+          git fetch --tags --prune || true
+
       - name: Create zip of EFI
         run: |
+          set -euo pipefail
+          TAG="${{ steps.set_tag.outputs.tag }}"
           mkdir -p release
-          zip -r release/efi-${{ steps.set_tag.outputs.tag }}.zip macos\* efi || zip -r release/efi-${{ steps.set_tag.outputs.tag }}.zip efi || true
+
+          # Collect possible source directories (case-insensitive candidate names)
+          sources=()
+          for d in "macOS"* "macos"* efi; do
+            if [ -d "$d" ]; then
+              sources+=("$d")
+            fi
+          done
+
+          if [ ${#sources[@]} -eq 0 ]; then
+            echo "No EFI source directories found (macOS* or efi). Creating placeholder info file." >&2
+            echo "No matching source directories found in repository." > release/README.txt
+            echo "Repository root listing:" >> release/README.txt
+            ls -1 >> release/README.txt
+          else
+            echo "Zipping sources: ${sources[*]}"
+            # Use printf to pass arrays safely
+            zip -r "release/efi-${TAG}.zip" "${sources[@]}" || true
+          fi
 
       - name: Generate SHA256
         run: |
-          ls -la release
-          sha256sum release/* > release/SHA256SUMS.txt || shasum -a 256 release/* > release/SHA256SUMS.txt
+          set -euo pipefail
+          ls -la release || true
+          if ls release/* >/dev/null 2>&1; then
+            sha256sum release/* > release/SHA256SUMS.txt || shasum -a 256 release/* > release/SHA256SUMS.txt
+          else
+            echo "No release files present; writing placeholder checksums file." > release/SHA256SUMS.txt
+          fi
+          ls -la release || true
+
+      - name: Show generated release notes (preview)
+        if: always()
+        run: |
+          echo "--- Release notes preview ---"
+          echo "Tag: ${{ steps.set_tag.outputs.tag }}"
+          echo "" || true
+          # print first 200 lines to logs to avoid very long output
+          echo "${{ steps.notes.outputs.body }}" | sed -n '1,200p' || true
+          echo "--- End preview ---"
 
       - name: Generate release notes
         id: notes

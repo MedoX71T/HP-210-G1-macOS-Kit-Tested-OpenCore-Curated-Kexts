@@ -156,16 +156,6 @@ jobs:
           fi
           ls -la release || true
 
-      - name: Show generated release notes (preview)
-        if: always()
-        run: |
-          echo "--- Release notes preview ---"
-          echo "Tag: ${{ steps.set_tag.outputs.tag }}"
-          echo "" || true
-          # print first 200 lines to logs to avoid very long output
-          echo "${{ steps.notes.outputs.body }}" | sed -n '1,200p' || true
-          echo "--- End preview ---"
-
       - name: Generate release notes
         id: notes
         env:

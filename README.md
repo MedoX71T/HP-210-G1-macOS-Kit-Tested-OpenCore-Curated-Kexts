@@ -70,7 +70,7 @@
 Tools & logs: Use `MountEFI`, `IORegistryExplorer`, and `Hackintool` for diagnosis. When opening an issue, include your EFI zip and logs (`/var/log/system.log`, `BootLog.txt`, and an IORegistry dump). Use `scripts/collect-diagnostics.sh` to produce a diagnostics archive to attach to issues.
 
 ---
-
+## Note :warning:
 #### I am not responsible for any damages you may cause.
 
 #### If my work here helped you. Please consider donating, it would mean a lot to me.

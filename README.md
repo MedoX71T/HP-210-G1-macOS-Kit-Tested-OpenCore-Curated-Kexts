@@ -2,6 +2,34 @@
 
 **TL;DR:** A fully-configured vanilla OpenCore EFI for the **HP 210 G1** (Intel iGPU) — tested on **macOS Monterey (12.7.6)** and **macOS Sonoma (14.8)**. Includes ACPI patches, kexts, USB mapping, and post-install fixes.
 
+<p align="center">
+    <a href="https://www.apple.com/macos/monterey/">
+        <img src="https://img.shields.io/badge/Monterey-12.7.6-orange"></a>
+    <a href="https://www.intel.com/content/dam/www/public/us/en/documents/datasheets/hp-210-g1-notebook-pc-data-sheet.pdf">
+        <img src="https://img.shields.io/badge/Notebook-HP 210 G1-red"/></a>
+    <a href="https://github.com/acidanthera/OpenCorePkg">
+        <img src="https://img.shields.io/badge/OpenCore-1.0.5-yellow"/></a>
+    <a href="#">
+        <img src="https://img.shields.io/github/last-commit/MedoX71T/HP210G1-Hackintosh"/></a>
+    <a href="https://github.com/MedoX71T/HP210G1-Hackintosh/releases">
+        <img src="https://img.shields.io/github/v/release/medox71t/HP210G1-Hackintosh"/></a>
+</p>
+
+<p align="center">
+    <a href="https://ko-fi.com/medox71t">
+        <img src="https://img.shields.io/badge/Kofi-Buy%20me%20a%20coffee-orange.svg"></a>
+    <a href="https://www.buymeacoffee.com/MedoX71T">
+        <img src="https://img.shields.io/badge/Donate-MedoX71T%20-FFF27D"></a>
+    
+</p>
+
+<p align="center">
+    <a href="">
+        <img src="src/HP-210-G1.png" alt="HP 210 G1 running macOS Monterey & Sonoma" width="800"> </a>
+</p>
+
+<p align="center"><em>Screenshot: HP 210 G1 running macOS Monterey & Sonoma</em></p>
+
 ---
 
 ## Table of Contents
@@ -41,33 +69,7 @@
 
 Tools & logs: Use `MountEFI`, `IORegistryExplorer`, and `Hackintool` for diagnosis. When opening an issue, include your EFI zip and logs (`/var/log/system.log`, `BootLog.txt`, and an IORegistry dump). Use `scripts/collect-diagnostics.sh` to produce a diagnostics archive to attach to issues.
 
-<p align="center">
-    <a href="https://www.apple.com/macos/monterey/">
-        <img src="https://img.shields.io/badge/Monterey-12.7.6-orange"></a>
-    <a href="https://www.intel.com/content/dam/www/public/us/en/documents/datasheets/hp-210-g1-notebook-pc-data-sheet.pdf">
-        <img src="https://img.shields.io/badge/Notebook-HP 210 G1-red"/></a>
-    <a href="https://github.com/acidanthera/OpenCorePkg">
-        <img src="https://img.shields.io/badge/OpenCore-1.0.5-yellow"/></a>
-    <a href="#">
-        <img src="https://img.shields.io/github/last-commit/MedoX71T/HP210G1-Hackintosh"/></a>
-    <a href="https://github.com/MedoX71T/HP210G1-Hackintosh/releases">
-        <img src="https://img.shields.io/github/v/release/medox71t/HP210G1-Hackintosh"/></a>
-</p>
-
-<p align="center">
-    <a href="https://ko-fi.com/medox71t">
-        <img src="https://img.shields.io/badge/Kofi-Buy%20me%20a%20coffee-orange.svg"></a>
-    <a href="https://www.buymeacoffee.com/MedoX71T">
-        <img src="https://img.shields.io/badge/Donate-MedoX71T%20-FFF27D"></a>
-    
-</p>
-
-<p align="center">
-    <a href="">
-        <img src="src/HP-210-G1.png" alt="HP 210 G1 running macOS Monterey & Sonoma" width="800"> </a>
-</p>
-
-<p align="center"><em>Screenshot: HP 210 G1 running macOS Monterey & Sonoma</em></p>
+---
 
 #### I am not responsible for any damages you may cause.
 

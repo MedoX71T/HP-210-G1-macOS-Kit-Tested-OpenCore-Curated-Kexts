@@ -199,8 +199,8 @@ jobs:
               others+="- ${subject} ([${short}](https://github.com/${REPO}/commit/${full}))\n"
             fi
           done <<EOF
-$commits
-EOF
+          $commits
+          EOF
 
           # detect affected platforms by changed files
           if [ -n "$prev_tag" ]; then
